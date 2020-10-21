@@ -3,7 +3,16 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ss.pj.sys.dao.SysLogDao">
-	<!-- 动态SQL -->
+	<!-- 定义共性sql元素 -->
+	<sql id="queryWhere">
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%", #{username}, "%")
+			</if>
+		</where>
+	</sql>
+		
+	<!-- 基于多个id删除日志 -->
 	<delete id="deleteObjectsByIds">
 		delete from sys_logs
 		where id in
@@ -12,4 +21,25 @@
 			#{id}
 		</foreach>
 	</delete>
+
+	<!-- 统计记录总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		from sys_logs
+		<!-- 判断username不为空且不为空串 -->
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%", #{username}, "%")
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询当前页数 -->
+	<select id="findPageObjects" resultType="com.ss.pg.sys.po.SysLog">
+		select *
+		from sys_logs
+		<include refid="queryWhere"/>
+		order by createdTime desc
+		limit #{startIndex}, #{pageSize}
+	</select>
 </mapper>
