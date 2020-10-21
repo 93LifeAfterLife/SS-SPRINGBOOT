@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ss.pg.sys.po.SysLog;
 import com.ss.pj.sys.dao.SysLogDao;
+import com.ss.pj.sys.po.SysLog;
 
 @SpringBootTest
 public class MybatisTests {

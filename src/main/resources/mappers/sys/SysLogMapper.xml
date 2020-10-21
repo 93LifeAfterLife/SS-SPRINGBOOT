@@ -35,7 +35,7 @@
 	</select>
 
 	<!-- 查询当前页数 -->
-	<select id="findPageObjects" resultType="com.ss.pg.sys.po.SysLog">
+	<select id="findPageObjects" resultType="com.ss.pj.sys.po.SysLog">
 		select *
 		from sys_logs
 		<include refid="queryWhere"/>

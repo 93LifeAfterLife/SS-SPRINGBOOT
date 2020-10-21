@@ -1,4 +1,4 @@
-package com.ss.pg.sys.po;
+package com.ss.pj.sys.po;
 
 import java.io.Serializable;
 import java.util.Date;

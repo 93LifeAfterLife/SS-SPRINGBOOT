@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.ss.pg.sys.po.SysLog;
+import com.ss.pj.sys.po.SysLog;
 
 @Mapper
 public interface SysLogDao {
