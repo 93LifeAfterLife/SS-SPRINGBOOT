@@ -39,7 +39,24 @@ public class SysLogServiceImpl implements SysLogService{
 
 	@Override
 	public int deleteObjectsByIds(Integer... ids) {
-		int rows = sysLogDao.deleteObjectsByIds(ids);
+		//1. 参数校验
+		if (ids == null||ids.length == 0) {
+			throw new IllegalArgumentException("请至少选择一项进行操作!");
+		}
+		//2. 执行删除操作
+		int rows;
+		try {
+			rows = sysLogDao.deleteObjectsByIds(ids);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			// 发出警报信息, 例如给运维人员发消息
+			throw new ServiceException("系统故障, 正在恢复中...");
+		}
+		//3. 对结果进行验证
+		if (rows == 0) {
+			throw new ServiceException("记录可能已经不存在, 请重新操作!");
+		}
+		//4. 返回结果
 		return rows;
 	}
 

@@ -3,7 +3,9 @@ $(function () {
     // 异步加载分页页面
     $("#pageId").load(url, doGetObjects);
     // 搜索按钮注册点击事件
-    $(".input-group-btn").on("click", doQueryObjects);
+    $(".input-group-btn").on("click", doQueryObjects).on("click", doDeleteObjects);
+    // thead中checkbox对象事件注册
+    $("#checkAll").onchange = doChangeTBodyCheckboxState; 
 });
 
 // 异步查询用户行为日志
@@ -89,3 +91,8 @@ function doQueryObjects() {
     doGetObjects();
     //3. 
 };
+
+// 执行删除业务
+function doDeleteObjects() {
+
+}
