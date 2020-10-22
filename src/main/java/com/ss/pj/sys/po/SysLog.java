@@ -13,7 +13,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class SysLog implements Serializable {
-	private static final long serialVersionUID = 3401654542716012414L;
+	private static final long serialVersionUID = -6422290427378125645L;
 	/** 用户id */
 	private Integer id;
 	/** 用户名 */

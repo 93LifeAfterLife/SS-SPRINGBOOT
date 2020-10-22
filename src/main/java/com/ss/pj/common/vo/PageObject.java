@@ -14,15 +14,15 @@ import lombok.ToString;
 @Data
 @ToString
 public class PageObject<T> implements Serializable {
-	private static final long serialVersionUID = -8889291652249210100L;
+	private static final long serialVersionUID = 3788546216288045734L;
 	/** 当前页 */
 	private Integer pageCurrent;
 	/** 页面大小 */
-	private Integer pageSize;
+	private int pageSize;
 	/** 查询所得总记录(行)数 */
-	private Integer rowCount;
+	private int rowCount;
 	/** 计算所得总页数 */
-	private Integer pageCount;
+	private int pageCount;
 	/** 当前页记录 */
 	private List<T> records;
 }
