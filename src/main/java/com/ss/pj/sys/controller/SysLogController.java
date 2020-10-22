@@ -14,6 +14,11 @@ public class SysLogController {
 	@Autowired
 	private SysLogService sysLogService;
 	
+	@RequestMapping("doTestAjax")
+	public String doTestAjax() {
+		return "test/ajax";
+	}
+	
 	@RequestMapping("doDeleteObjectById")
 	@ResponseBody
 	public String doDeleteObjectById(Integer id) {
