@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ss.pj.common.exception.ServiceException;
+import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.PageObject;
 import com.ss.pj.sys.dao.SysLogDao;
 import com.ss.pj.sys.po.SysLog;
@@ -52,16 +53,11 @@ public class SysLogServiceImpl implements SysLogService{
 		if (rowCount==0)
 			throw new ServiceException("记录不存在!");
 		//3. 查询当前页要呈现的记录
-		int pageSize = 3;
-		int startIndex = pageSize*(pageCurrent-1);
+		int pageSize = PageUtil.getPageSize();
+		int startIndex = PageUtil.getStartIndex(pageCurrent);
 		List<SysLog> records = sysLogDao.findPageObjects(username, startIndex, pageSize);
 		//4. 对查询结果进行计算和封装
-		PageObject<SysLog> po = new PageObject<>();
-		po.setRowCount(rowCount);
-		po.setRecords(records);
-		po.setPageSize(pageSize);
-		po.setPageCount((rowCount-1)/pageSize + 1);
-		po.setPageCurrent(pageCurrent);
+		PageObject<SysLog> po = PageUtil.newPageObject(pageCurrent, rowCount, pageSize, records);
 		//5. 返回结果
 		return po;
 	}

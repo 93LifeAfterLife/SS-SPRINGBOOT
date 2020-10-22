@@ -1,4 +1,4 @@
-package com.ss.common.cache;
+package com.ss.pj.common.cache;
 
 import org.springframework.stereotype.Component;
 

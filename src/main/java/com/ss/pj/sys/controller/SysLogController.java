@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ss.pj.common.vo.JsonResult;
+import com.ss.pj.common.vo.PageObject;
+import com.ss.pj.sys.po.SysLog;
 import com.ss.pj.sys.service.SysLogService;
 
 @Controller
@@ -31,5 +34,11 @@ public class SysLogController {
 	@RequestMapping("doLogListUI")
 	public String doLogListUI() {
 		return "sys/log_list";
+	}
+	
+	@RequestMapping("doFindPageObjects")
+	@ResponseBody
+	public JsonResult doFindPageObjects(Integer pageCurrent, String username){
+		return new JsonResult(sysLogService.findPageObjects(username, pageCurrent));
 	}
 }
