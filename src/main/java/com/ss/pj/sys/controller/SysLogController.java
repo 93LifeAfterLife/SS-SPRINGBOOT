@@ -23,9 +23,9 @@ public class SysLogController {
 	
 	@RequestMapping("doDeleteObjectsByIds")
 	@ResponseBody
-	public String doDeleteObjectsByIds(Integer... ids) {
+	public JsonResult doDeleteObjectsByIds(Integer... ids) {
 		int rows = sysLogService.deleteObjectsByIds(ids);
-		return "delete OK! rows= " + rows;
+		return new JsonResult("delete OK! rows= " + rows);
 	}
 	
 	/** 返回日志列表页面 */
