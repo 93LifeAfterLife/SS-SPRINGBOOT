@@ -9,7 +9,7 @@ import com.ss.pj.common.vo.PageObject;
  * @author td
  */
 public class PageUtil {
-	private static int pageSize=10;
+	private static int pageSize=5;
 	
 	public static int getPageSize() {
 		return pageSize;

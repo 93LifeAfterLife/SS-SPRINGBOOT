@@ -3,13 +3,18 @@ $(function () {
     // 异步加载分页页面
     $("#pageId").load(url, doGetObjects);
     // 搜索按钮注册点击事件
-    $(".input-group-btn").on("click", doQueryObjects).on("click", doDeleteObjects);
+    $(".input-group-btn").on("click", ".btn-search", doQueryObjects);
+    $(".input-group-btn").on("click", ".btn-delete", doDeleteObjects);
     // thead中checkbox对象事件注册
-    $("#checkAll").onchange = doChangeTBodyCheckboxState; 
+    $("#checkAll").on("change", doChangeTBodyCheckboxState);
+    // tbody中checkbox对象事件注册
+    $("#tbodyId").on("change", ".cBox", doChangeTHeadCheckboxState);
 });
 
 // 异步查询用户行为日志
 function doGetObjects() {
+    // 0. 重置全选框的状态值为false
+    $("#checkAll").prop("checked", false);
     // console.log("doGetObjects()");
     // debugger 断点调试
     //1. 定义请求的url
@@ -94,5 +99,83 @@ function doQueryObjects() {
 
 // 执行删除业务
 function doDeleteObjects() {
+    // debugger
+    // console.log("doDeleteObjects()");
+    //1. 获取选中的id值
+    var ids = doGetChechedIds();
+    // 以下校验在客户端和服务端双方都进行判定
+    if (ids.length == 0) {
+        alert("请至少选择一项进行操作!!");
+        return;
+    }
+    //2. 异步请求执行删除操作
+    const url = "log/doDeleteObjectsByIds";
+    var params = { "ids": ids.toString() };
+    // console.log(params);
+    $.post(url, params,
+        function (result) {
+            if (result.state == 1) {
+                alert(result.message);
+                //2.1 若在最后一页执行删除操作时, 页面应该返回上一页
+                doChangePageCurrent();
+                //2.2 执行初始化操作
+                doGetObjects();
+            } else {
+                alert(result.message);
+            }
+        }
+    );
+};
 
-}
+function doGetChechedIds() {
+    //1. 定义一个数组, 用于存储选中的checkbox 的id值
+    var array = [];
+    //2. 获取tbody中所有类型为checkbox的input元素, 并迭代这些元素, 每发现一个元素都执行回调函数
+    $("#tbodyId input[type='checkbox']").each(function () {
+        //2.1 假如此元素的checked属性为true
+        // console.log("this", this);
+        // console.log("this.checkedProp", $(this).prop("checked"));
+        if ($(this).prop("checked")) {
+            //2.2 调用数组对象的push方法, 将选中对象的值存储到数组
+            array.push($(this).val());
+        }
+    });
+    return array;
+};
+
+function doChangeTBodyCheckboxState() {
+    // console.log("doChangeTBodyCheckboxState()");
+    //1. 获取全选checkAll对象的状态值
+    let flag = $(this).prop("checked");
+    //2. 修改tbody中checkbox对象的状态值
+    $("#tbodyId input[type='checkbox']").each(function () {
+        $(this).prop("checked", flag);
+    });
+};
+
+function doChangeTHeadCheckboxState() {
+    // console.log("doChangeTHeadCheckboxState()");
+    //1. 获取所有tbody中checkbox对象的状态相与的结果
+    let flag = true;
+    //1.1 逻辑与: 只要有一个是false, 那么flag的值就是false
+    $("#tbodyId input[type='checkbox']").each(function () {
+        flag = flag && $(this).prop("checked");
+    });
+    // console.log("flag", flag);
+    //2. 修改checkAll对象的状态值
+    $("#checkAll").prop("checked", flag);
+};
+
+// 在刷新前修改当前页码值
+function doChangePageCurrent() {
+    //1. 获取当前页码值, 总页数
+    let pageCurrent = $("#pageId").data("pageCurrent");
+    let pageCount = $("#pageId").data("pageCount");
+    //2. 获取checkAll的状态值
+    var flag = $("#checkAll").prop("checked");
+    //3. 判断并修改当前页码值 (不为首页, 没有勾选'全选', 即全选删除要跳回前一页, 且不是最后一页)
+    if (pageCurrent != 1 && flag && pageCurrent == pageCount) {
+        pageCurrent--;
+        $("#pageId").data("pageCurrent", pageCurrent);
+    }
+};
