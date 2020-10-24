@@ -2,7 +2,7 @@
 $(function () {
     // 点击事件注册: 当点击指定id对应的对象时, 执行操作
     $("#load-log-id").click(function () {
-        var url = "log/doLogListUI";
+        const url = "log/doLogListUI";
         // load函数是一个jquery中的异步加载函数, 封装了ajax调用过程
         $("#mainContentId").load(url);
     });
