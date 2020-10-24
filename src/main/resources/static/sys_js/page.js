@@ -3,7 +3,7 @@ function doSetPagination(pageObject) {
     //1. 初始化总记录数
     $(".rowCount").html("总记录数(" + pageObject.rowCount + ")");
     //2. 初始化总页数
-    $(".pageCount").html("总记页数(" + pageObject.pageCount + ")");
+    $(".pageCount").html("总页数(" + pageObject.pageCount + ")");
     //3. 初始化当前页码
     $(".pageCurrent").html("当前页(" + pageObject.pageCurrent + ")");
     //4. 保存当前页码值和总页数, 供外界访问
@@ -39,4 +39,11 @@ function doJumpToPage() {
     $("#pageId").data("pageCurrent", pageCurrent);
     //4. 基于pageCurrent执行新的查询
     doGetObjects();
+};
+
+// 优化最后一页删除后的刷新策略, 没有数据时显示
+function doInitPagination() {
+    $(".rowCount").html("总记录数(0)");
+    $(".pageCount").html("总页数(0)");
+    $(".pageCurrent").html("当前页(1)");
 };

@@ -41,7 +41,7 @@ public class SysLogServiceImpl implements SysLogService{
 	public int deleteObjectsByIds(Integer... ids) {
 		//1. 参数校验
 		if (ids == null||ids.length == 0) {
-			throw new IllegalArgumentException("请至少选择一项进行操作!");
+			throw new IllegalArgumentException("IllegalArgumentException: 请至少选择一项进行操作!");
 		}
 		//2. 执行删除操作
 		int rows;
@@ -50,11 +50,11 @@ public class SysLogServiceImpl implements SysLogService{
 		} catch (Throwable e) {
 			e.printStackTrace();
 			// 发出警报信息, 例如给运维人员发消息
-			throw new ServiceException("系统故障, 正在恢复中...");
+			throw new ServiceException("ServiceException: 系统故障, 正在恢复中...");
 		}
 		//3. 对结果进行验证
 		if (rows == 0) {
-			throw new ServiceException("记录可能已经不存在, 请重新操作!");
+			throw new ServiceException("ServiceException: 记录可能已经不存在, 请重新操作!");
 		}
 		//4. 返回结果
 		return rows;
@@ -64,11 +64,11 @@ public class SysLogServiceImpl implements SysLogService{
 	public PageObject<SysLog> findPageObjects(String username, Integer pageCurrent) {
 		//1. 参数校验
 		if (pageCurrent==null || pageCurrent<1)
-			throw new IllegalArgumentException("页码不正确!");
+			throw new IllegalArgumentException("IllegalArgumentException: 页码不正确!");
 		//2. 查询总记录数并进行校验
 		int rowCount = sysLogDao.getRowCount(username);
 		if (rowCount==0)
-			throw new ServiceException("记录不存在!");
+			throw new ServiceException("ServiceException: 记录不存在!");
 		//3. 查询当前页要呈现的记录
 		int pageSize = PageUtil.getPageSize();
 		int startIndex = PageUtil.getStartIndex(pageCurrent);

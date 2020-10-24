@@ -112,19 +112,19 @@ function doDeleteObjects() {
     const url = "log/doDeleteObjectsByIds";
     var params = { "ids": ids.toString() };
     // console.log(params);
-    $.post(url, params,
-        function (result) {
-            if (result.state == 1) {
-                alert(result.message);
-                //2.1 若在最后一页执行删除操作时, 页面应该返回上一页
-                doChangePageCurrent();
-                //2.2 执行初始化操作
-                doGetObjects();
-            } else {
-                alert(result.message);
-            }
+    $.post(url, params, function (result) {
+        if (result.state == 1) {
+            alert(result.message);
+            //2.1 刷新策略(重新查询, 清空tboby内容);
+            doRefresh();
+            //2.2 若在最后一页执行删除操作时, 页面应该返回上一页
+            // doChangePageCurrent();
+            //2.3 执行初始化操作
+            // doGetObjects();
+        } else {
+            alert(result.message);
         }
-    );
+    });
 };
 
 function doGetChechedIds() {
@@ -166,16 +166,28 @@ function doChangeTHeadCheckboxState() {
     $("#checkAll").prop("checked", flag);
 };
 
-// 在刷新前修改当前页码值
-function doChangePageCurrent() {
+// 刷新策略
+function doRefresh() {
     //1. 获取当前页码值, 总页数
     let pageCurrent = $("#pageId").data("pageCurrent");
     let pageCount = $("#pageId").data("pageCount");
     //2. 获取checkAll的状态值
     var flag = $("#checkAll").prop("checked");
-    //3. 判断并修改当前页码值 (不为首页, 没有勾选'全选', 即全选删除要跳回前一页, 且不是最后一页)
+    //3. 判断并修改当前页码值 
+    //3.1 若删除完最后一页且是唯一一页, 则直接清空数据, 不再执行查询
+    if (pageCurrent == pageCount && pageCurrent == 1 && flag) {
+        $("#tbodyId").empty();
+        doInitPagination();
+        // 并重置全选框
+        $("#checkAll").prop("checked", false);
+        $("#tbodyId").html("记录已不存在!");
+        return;
+    }
+    //3.2 不为首页, 没有勾选'全选', 即全选删除要跳回前一页, 且不是最后一页
     if (pageCurrent != 1 && flag && pageCurrent == pageCount) {
         pageCurrent--;
         $("#pageId").data("pageCurrent", pageCurrent);
     }
+    //3.3 执行默认操作
+    doGetObjects();
 };
