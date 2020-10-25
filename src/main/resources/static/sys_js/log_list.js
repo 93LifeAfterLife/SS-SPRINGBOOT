@@ -108,6 +108,7 @@ function doDeleteObjects() {
         alert("请至少选择一项进行操作!!");
         return;
     }
+    if (!confirm("确定删除吗")) return;
     //2. 异步请求执行删除操作
     const url = "log/doDeleteObjectsByIds";
     var params = { "ids": ids.toString() };
