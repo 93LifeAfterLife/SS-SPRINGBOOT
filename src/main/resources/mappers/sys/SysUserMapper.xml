@@ -35,7 +35,7 @@
 	</select>
 
 	<!-- 查询当前页面数据 -->
-	<select id="findPageObjects" resultType="sysUserDeptVo">
+	<select id="findPageObjects" resultMap="sysUserDeptVo">
 		select *
 		from sys_users
 		<include refid="queryWhere" />
