@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ThreadTest01 {
 	// 阻塞队列, 内含任务Runnable
 	static	BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(2);
-	
+
 	// 自定义线程工厂
 	static ThreadFactory factory = new ThreadFactory() {
 		// 前缀
@@ -27,7 +27,7 @@ public class ThreadTest01 {
 			return new Thread(r, PREFIX+"-"+at.getAndIncrement());
 		}
 	};
-	
+
 	static ThreadPoolExecutor tPool = new ThreadPoolExecutor(
 			2, 					// corePoolSize: 核心线程数
 			3, 					// maximumPoolSize: 最大线程数
@@ -36,7 +36,7 @@ public class ThreadTest01 {
 			workQueue,			// workQueue: 工作队列
 			factory				// threadFactory: 线程工厂
 			);		
-	
+
 	static void doTask(int taskNo) {
 		// 执行任务
 		tPool.execute(new Runnable() {
@@ -52,7 +52,7 @@ public class ThreadTest01 {
 			}
 		});
 	}
-	
+
 	public static void main(String[] args) {
 		doTask(1);
 		doTask(2);

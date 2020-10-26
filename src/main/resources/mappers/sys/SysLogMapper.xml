@@ -34,7 +34,7 @@
 		</where>
 	</select>
 
-	<!-- 查询当前页数 -->
+	<!-- 查询当前页面数据 -->
 	<select id="findPageObjects" resultType="com.ss.pj.sys.po.SysLog">
 		select *
 		from sys_logs

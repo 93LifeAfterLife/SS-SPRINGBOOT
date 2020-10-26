@@ -3,17 +3,12 @@ package com.ss.pj.common.vo;
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.Data;
-import lombok.ToString;
-
 /**
  * 负责封装业务层当前页记录以及分页信息
  * @author td
  * @param <T>
  */
 
-@Data
-@ToString
 public class PageObject<T> implements Serializable {
 	private static final long serialVersionUID = -6396332754299900831L;
 	/** 当前页 */
@@ -26,4 +21,34 @@ public class PageObject<T> implements Serializable {
 	private int pageCount;
 	/** 当前页记录 */
 	private List<T> records;
+	public Integer getPageCurrent() {
+		return pageCurrent;
+	}
+	public void setPageCurrent(Integer pageCurrent) {
+		this.pageCurrent = pageCurrent;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	public int getRowCount() {
+		return rowCount;
+	}
+	public void setRowCount(int rowCount) {
+		this.rowCount = rowCount;
+	}
+	public int getPageCount() {
+		return pageCount;
+	}
+	public void setPageCount(int pageCount) {
+		this.pageCount = pageCount;
+	}
+	public List<T> getRecords() {
+		return records;
+	}
+	public void setRecords(List<T> records) {
+		this.records = records;
+	}
 }

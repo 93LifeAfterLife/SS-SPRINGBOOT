@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.pj.sys.dao.SysRoleDao">
+	<!-- 定义共性sql元素 -->
+	<sql id="queryWhere">
+		<where>
+			<if test="name!=null and name!=''">
+				name like concat("%", #{name}, "%")
+			</if>
+		</where>
+	</sql>
+
+	<!-- 查询当前页面数据 -->
+	<select id="doFindPageObjects"
+		resultType="com.ss.pj.sys.po.SysRole">
+		select * from sys_roles
+		<include refid="queryWhere" />
+		limit #{startIndex}, #{pageSize}
+	</select>
+
+	<!-- 统计记录总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		from sys_roles
+		<include refid="queryWhere" />
+	</select>
+
+	<!-- 新增角色 -->
+	<insert id="insertObject"
+		parameterType="com.ss.pj.sys.po.SysRole" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into sys_roles
+		(id,name,note,createdTime,modifiedTime,createdUser,modifiedUser)
+		values
+		(null,#{name},#{note},now(),now(),#{createdUser},#{modifiedUser})
+	</insert>
+
+	<!-- 通过id查询角色信息 -->
+	<select id="findObjectById" resultMap="sysRoleMenuVo">
+		select id,name,note
+		from
+		sys_roles
+		where id=#{id}
+	</select>
+
+	<!-- SysRoleMenuVo 结果集, 供查询使用 -->
+	<resultMap type="com.ss.pj.common.vo.SysRoleMenuVo"
+		id="sysRoleMenuVo">
+		<!-- property指定的值与resultMap类型中的set方法匹配 column 表示上个查询中的字段名 select 表示要执行的当前查询 -->
+		<collection property="menuIds" column="id"
+			select="com.ss.pj.sys.dao.SysRoleMenuDao.findMenuIdsByRoleId">
+		</collection>
+	</resultMap>
+
+	<!-- 修改角色信息 -->
+	<update id="updateObject"
+		parameterType="com.ss.pj.sys.po.SysRole">
+		update sys_roles
+		<set>
+			<if test="name!=null and name!=''">
+				name=#{name},
+			</if>
+			<if test="note!=null and note!=''">
+				note=#{note},
+			</if>
+			<if test="modifiedUser!=null and modifiedUser!=''">
+				modifiedUser=#{modifiedUser},
+			</if>
+			modifiedTime=now()
+		</set>
+		where id=#{id}
+	</update>
+</mapper>
