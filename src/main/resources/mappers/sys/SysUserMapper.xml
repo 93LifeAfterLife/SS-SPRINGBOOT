@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ss.pj.sys.dao.SysUserDao">
+	<!-- 定义共性sql元素 -->
+	<sql id="queryWhere">
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%", #{username}, "%")
+			</if>
+		</where>
+	</sql>
+
+	<!-- 基于多个id删除日志 -->
+	<delete id="deleteObjectsByIds">
+		delete from sys_logs
+		where id in
+		<foreach collection="ids" open="(" close=")" separator=","
+			item="id">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 统计记录总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*)
+		from sys_users
+		<!-- 判断username不为空且不为空串 -->
+		<where>
+			<if test="username!=null and username!=''">
+				username like concat("%", #{username}, "%")
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询当前页面数据 -->
+	<select id="findPageObjects" resultType="sysUserDeptVo">
+		select *
+		from sys_users
+		<include refid="queryWhere" />
+		limit #{startIndex}, #{pageSize}
+	</select>
+
+	<resultMap type="com.ss.pj.common.vo.SysUserDeptVo"
+		id="sysUserDeptVo">
+		<!-- 关联查询 -->
+		<association property="sysDept" column="deptId"
+			select="com.ss.pj.sys.dao.SysDeptDao.findById">
+		</association>
+	</resultMap>
+
+
+</mapper>

@@ -14,6 +14,8 @@ $(function () {
     doLoadUI("load-dept-id", "dept/doDeptListUI");
     // 加载角色页面
     doLoadUI("load-role-id", "role/doRoleListUI");
+    // 加载用户页面
+    doLoadUI("load-user-id", "role/doUserListUI");
 });
 
 // 提取共性操作, 加载页面
