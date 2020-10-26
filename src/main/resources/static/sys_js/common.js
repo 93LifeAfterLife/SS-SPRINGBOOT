@@ -1,5 +1,6 @@
 // 页面加载就绪函数, 加载完成后执行内部方法
 $(function () {
+    // 加载日志页面
     // 点击事件注册: 当点击指定id对应的对象时, 执行操作
     $("#load-log-id").click(function () {
         const url = "log/doLogListUI";
