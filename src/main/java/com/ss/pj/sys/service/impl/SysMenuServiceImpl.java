@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.ss.pj.common.vo.ZTreeMenuNode;
+import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.dao.SysMenuDao;
 import com.ss.pj.sys.po.SysMenu;
 import com.ss.pj.sys.service.SysMenuService;
@@ -24,7 +24,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	}
 
 	@Override
-	public List<ZTreeMenuNode> findZtreeMenuNodes() {
+	public List<ZTreeNode> findZtreeMenuNodes() {
 		return sysMenuDao.findZtreeMenuNodes();
 	}
 
@@ -44,5 +44,19 @@ public class SysMenuServiceImpl implements SysMenuService {
 		int rows = sysMenuDao.insertObject(sysMenu);
 		//3. 返回结果
 		return rows;
+	}
+
+	@Override
+	public int updateObject(SysMenu sysMenu) {
+		if (sysMenu == null) {
+			throw new IllegalArgumentException("IllegalArgumentException: 所保存对象不能为空!");
+		}
+		if (StringUtils.isEmpty(sysMenu.getName())) {
+			throw new IllegalArgumentException("IllegalArgumentException: 菜单名不能为空!");
+		}
+		if (StringUtils.isEmpty(sysMenu.getPermission())) {
+			throw new IllegalArgumentException("IllegalArgumentException: 权限标识不能为空!");
+		}
+		return sysMenuDao.updateObject(sysMenu);
 	}
 }

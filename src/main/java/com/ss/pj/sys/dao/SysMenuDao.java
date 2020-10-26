@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import com.ss.pj.common.vo.ZTreeMenuNode;
+import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.po.SysMenu;
 
 @Mapper
@@ -26,7 +26,7 @@ public interface SysMenuDao {
 	 * @return
 	 */
 	@Select("select id, name, parentId from sys_menus")
-	List<ZTreeMenuNode> findZtreeMenuNodes();
+	List<ZTreeNode> findZtreeMenuNodes();
 	
 	/**
 	 * 添加新的菜单信息
@@ -34,4 +34,11 @@ public interface SysMenuDao {
 	 * @return
 	 */
 	int insertObject(SysMenu sysMenu);
+	
+	/**
+	 * 更新(修改)菜单信息
+	 * @param sysMenu
+	 * @return
+	 */
+	int updateObject(SysMenu sysMenu);
 }

@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ss.pj.common.vo.JsonResult;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 全局异常处理类
  * 当控制层出现异常时:
@@ -16,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author td
  */
 @ControllerAdvice // 此注解修饰的类为一个全局异常处理类
-@Slf4j
+// @Slf4j
 public class GlobalExceptionHandler {
 	/**
 	 * 注解表示异常处理方法
@@ -27,7 +25,7 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public JsonResult doHandleRuntimeException(RuntimeException e) {
 		e.printStackTrace();
-		log.error(e.getMessage());
+		// log.error(e.getMessage());
 		return new JsonResult(e);
 	}
 }

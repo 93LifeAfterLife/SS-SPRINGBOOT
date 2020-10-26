@@ -9,6 +9,8 @@ $(function () {
 
     // 加载菜单页面
     doLoadUI("load-menu-id", "menu/doMenuListUI");
+    // 加载部门页面
+    doLoadUI("load-dept-id", "dept/doDeptListUI");
 });
 
 // 提取共性操作, 加载页面

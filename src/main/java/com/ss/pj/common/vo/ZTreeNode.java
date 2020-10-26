@@ -6,8 +6,8 @@ import java.io.Serializable;
  * 菜单页树结构节点对象
  * @author td
  */
-public class ZTreeMenuNode implements Serializable{
-	private static final long serialVersionUID = -4444090417360476668L;
+public class ZTreeNode implements Serializable{
+	private static final long serialVersionUID = -243091833854355368L;
 	private Integer id;
 	private String name;
 	private Integer parentId;
