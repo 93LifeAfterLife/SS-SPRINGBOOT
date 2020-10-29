@@ -1,8 +1,7 @@
 package com.ss.pj.sys.service;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.ss.pj.common.vo.PageObject;
+import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
 public interface SysUserService {
@@ -13,7 +12,7 @@ public interface SysUserService {
 	 * @return
 	 */
 	PageObject<SysUserDeptVo> findPageObjects(String username, Integer pageCurrent);
-	
+
 	/**
 	 * 用户禁用启用操作
 	 * @param id
@@ -21,8 +20,13 @@ public interface SysUserService {
 	 * @param modifiedUser
 	 * @return
 	 */
-	int validById(
-			@Param("id")Integer id, 
-			@Param("valid")Integer valid, 
-			@Param("modifiedUser")String modifiedUser);
+	int validById(Integer id, Integer valid, String modifiedUser);
+	
+	/**
+	 * 保存新增的用户信息
+	 * @param sysUser
+	 * @param roleIds
+	 * @return
+	 */
+	int saveObject(SysUser sysUser, Integer... roleIds);
 }

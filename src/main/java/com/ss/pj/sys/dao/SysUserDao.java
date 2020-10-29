@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
 @Mapper
@@ -39,4 +40,11 @@ public interface SysUserDao {
 			@Param("id")Integer id, 
 			@Param("valid")Integer valid, 
 			@Param("modifiedUser")String modifiedUser);
+	
+	/**
+	 * 负责将用户信息写入到数据库
+	 * @param sysUser
+	 * @return
+	 */
+	int insertObjects(SysUser sysUser);
 }

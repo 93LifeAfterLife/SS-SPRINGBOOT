@@ -42,18 +42,31 @@
 		limit #{startIndex}, #{pageSize}
 	</select>
 
-	<resultMap type="com.ss.pj.common.vo.SysUserDeptVo"
+	<resultMap type="com.ss.pj.sys.vo.SysUserDeptVo"
 		id="sysUserDeptVo">
 		<!-- 关联查询 -->
 		<association property="sysDept" column="deptId"
 			select="com.ss.pj.sys.dao.SysDeptDao.findById">
 		</association>
 	</resultMap>
-	
+
 	<!-- 禁用启动 -->
 	<update id="validById">
 		update sys_users
-		set valid=#{valid}, modifiedUser=#{modifiedUser}, modifiedTime=now()
+		set valid=#{valid},
+		modifiedUser=#{modifiedUser}, modifiedTime=now()
 		where id=#{id}
 	</update>
+
+	<!-- 插入数据 -->
+	<insert id="insertObjects"
+		parameterType="com.ss.pj.sys.po.SysUser" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into sys_users
+		(username,password,deptId,email,mobile,salt,valid,
+		createdTime,modifiedTime,createdUser,modifiedUser)
+		values
+		(#{username},#{password},#{deptId},#{email},#{mobile},#{salt},#{valid},
+		now(),now(),#{createdUser},#{modifiedUser})
+	</insert>
 </mapper>

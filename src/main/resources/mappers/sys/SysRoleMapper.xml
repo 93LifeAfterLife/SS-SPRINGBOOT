@@ -46,7 +46,7 @@
 	</select>
 
 	<!-- SysRoleMenuVo 结果集, 供查询使用 -->
-	<resultMap type="com.ss.pj.common.vo.SysRoleMenuVo"
+	<resultMap type="com.ss.pj.sys.vo.SysRoleMenuVo"
 		id="sysRoleMenuVo">
 		<!-- property指定的值与resultMap类型中的set方法匹配 column 表示上个查询中的字段名 select 表示要执行的当前查询 -->
 		<collection property="menuIds" column="id"
@@ -72,4 +72,10 @@
 		</set>
 		where id=#{id}
 	</update>
+	
+	<!-- 查询角色ID,角色名 -->
+	<select id="findObjects" resultType="com.ss.pj.common.vo.CheckBox">
+		select id, name
+		from sys_roles
+	</select>
 </mapper>

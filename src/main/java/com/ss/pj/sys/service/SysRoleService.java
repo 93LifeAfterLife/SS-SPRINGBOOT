@@ -1,5 +1,8 @@
 package com.ss.pj.sys.service;
 
+import java.util.List;
+
+import com.ss.pj.common.vo.CheckBox;
 import com.ss.pj.common.vo.PageObject;
 import com.ss.pj.sys.po.SysRole;
 import com.ss.pj.sys.vo.SysRoleMenuVo;
@@ -40,4 +43,10 @@ public interface SysRoleService {
 	 * @return
 	 */
 	int updateObject(SysRole sysRole, Integer... menuIds);
+	
+	/**
+	 * 查询角色ID,角色名
+	 * @return
+	 */
+	List<CheckBox> findObjects();
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.ss.pj.common.vo.CheckBox;
 import com.ss.pj.sys.po.SysRole;
 import com.ss.pj.sys.vo.SysRoleMenuVo;
 
@@ -58,4 +59,10 @@ public interface SysRoleDao {
 	 * @return
 	 */
 	int updateObject(SysRole sysRole);
+	
+	/**
+	 * 查询角色ID,角色名
+	 * @return
+	 */
+	List<CheckBox> findObjects();
 }

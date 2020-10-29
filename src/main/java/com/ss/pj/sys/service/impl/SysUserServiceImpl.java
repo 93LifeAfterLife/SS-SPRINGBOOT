@@ -1,7 +1,9 @@
 package com.ss.pj.sys.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -10,6 +12,8 @@ import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.PageObject;
 import com.ss.pj.sys.dao.SysUserDao;
+import com.ss.pj.sys.dao.SysUserRoleDao;
+import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.service.SysUserService;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
@@ -17,6 +21,9 @@ import com.ss.pj.sys.vo.SysUserDeptVo;
 public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private SysUserDao sysUserDao;
+	
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao;
 
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(String username, Integer pageCurrent) {
@@ -62,6 +69,33 @@ public class SysUserServiceImpl implements SysUserService {
 		if (rows==0) {
 			throw new ServiceException("ServiceException: 此记录可能已经不存在!");
 		}
+		return rows;
+	}
+
+	@Override
+	public int saveObject(SysUser sysUser, Integer... roleIds) {
+		//1. 验证
+		if (sysUser == null) {
+			throw new NullPointerException("NullPointerException: 保存对象不能为空!");
+		}
+		if (StringUtils.isEmpty(sysUser.getUsername())) {
+			throw new IllegalArgumentException("IllegalArgumentException: 用户名不能为空!");
+		}
+		if (StringUtils.isEmpty(sysUser.getPassword())) {
+			throw new IllegalArgumentException("IllegalArgumentException: 密码不能为空!");
+		}
+		if (roleIds==null||roleIds.length==0) {
+			throw new ServiceException("ServiceException: 至少为用户分配一个角色!");
+		}
+		//2. 写入数据库
+		String salt = UUID.randomUUID().toString();
+		sysUser.setSalt(salt);
+		// 加密
+		SimpleHash simpleHash = new SimpleHash("MD5", sysUser.getPassword(), salt);
+		sysUser.setPassword(simpleHash.toHex());
+		int rows = sysUserDao.insertObjects(sysUser);
+		sysUserRoleDao.insertObject(sysUser.getId(), roleIds);
+		// 返回结果
 		return rows;
 	}
 }

@@ -57,4 +57,10 @@ public class SysRoleController {
 		sysRoleService.updateObject(sysRole, menuIds);
 		return new JsonResult("update ok!");
 	}
+	
+	@RequestMapping("doFindRoles")
+	@ResponseBody
+	public JsonResult doFindRoles() {
+		return new JsonResult(sysRoleService.findObjects());
+	}
 }

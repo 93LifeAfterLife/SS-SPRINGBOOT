@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ss.pj.common.vo.JsonResult;
 import com.ss.pj.common.vo.PageObject;
+import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.service.SysUserService;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
@@ -39,5 +40,12 @@ public class SysUserController {
 	@RequestMapping("doUserEditUI")
 	public String doUserEditUI() {
 		return "sys/user_edit";
+	}
+	
+	@RequestMapping("doSaveObject")
+	@ResponseBody
+	public JsonResult doSaveObject(SysUser sysUser, Integer... roleIds) {
+		sysUserService.saveObject(sysUser, roleIds);
+		return new JsonResult("save ok!");
 	}
 }
