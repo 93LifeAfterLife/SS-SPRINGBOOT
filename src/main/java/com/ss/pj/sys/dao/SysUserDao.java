@@ -47,4 +47,11 @@ public interface SysUserDao {
 	 * @return
 	 */
 	int insertObjects(SysUser sysUser);
+	
+	/**
+	 * 根据id查询用户以及部门
+	 * @param id
+	 * @return
+	 */
+	SysUserDeptVo findObjectById(Integer id);
 }

@@ -69,4 +69,11 @@
 		(#{username},#{password},#{deptId},#{email},#{mobile},#{salt},#{valid},
 		now(),now(),#{createdUser},#{modifiedUser})
 	</insert>
+	
+	<!-- 根据id查询用户以及部门 -->
+	<select id="findObjectById" resultMap="sysUserDeptVo" parameterType="int">
+		select * 
+		from sys_users
+		where id=#{id}
+	</select>
 </mapper>

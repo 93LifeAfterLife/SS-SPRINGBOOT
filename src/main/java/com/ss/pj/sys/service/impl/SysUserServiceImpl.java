@@ -1,6 +1,8 @@
 package com.ss.pj.sys.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -97,5 +99,25 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserRoleDao.insertObject(sysUser.getId(), roleIds);
 		// 返回结果
 		return rows;
+	}
+
+	@Override
+	public Map<String, Object> findObjectById(Integer userId) {
+		//1. 验证
+		if (userId == null || userId<=0) {
+			throw new IllegalArgumentException("IllegalArgumentException: 参数不合法!userId="+userId);
+		}
+		//2. 执行查询
+		SysUserDeptVo user = sysUserDao.findObjectById(userId);
+		if (user == null) {
+			throw new NullPointerException("NullPointerException: 此用户已经不存在!");
+		}
+		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(userId);
+		//3. 封装数据
+		Map<String, Object> map = new HashMap<>();
+		map.put("user", user);
+		map.put("roleIds", roleIds);
+		//4. 返回数据
+		return map;
 	}
 }

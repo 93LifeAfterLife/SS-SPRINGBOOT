@@ -1,5 +1,7 @@
 package com.ss.pj.sys.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +25,11 @@ public interface SysUserRoleDao {
 	int insertObject(
 			@Param("userId")Integer userId,
 			@Param("roleIds")Integer... roleIds);
+	
+	/**
+	 * 根据用户id查询角色ID
+	 * @param userId
+	 * @return
+	 */
+	List<Integer> findRoleIdsByUserId(Integer userId);
 }

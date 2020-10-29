@@ -1,5 +1,7 @@
 package com.ss.pj.sys.service;
 
+import java.util.Map;
+
 import com.ss.pj.common.vo.PageObject;
 import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.vo.SysUserDeptVo;
@@ -29,4 +31,11 @@ public interface SysUserService {
 	 * @return
 	 */
 	int saveObject(SysUser sysUser, Integer... roleIds);
+	
+	/**
+	 * 根据用户id查询用户信息,部门信息以及对应的角色信息
+	 * @param id
+	 * @return
+	 */
+	Map<String, Object> findObjectById(Integer userId);
 }

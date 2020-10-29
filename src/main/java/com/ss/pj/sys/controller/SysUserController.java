@@ -48,4 +48,10 @@ public class SysUserController {
 		sysUserService.saveObject(sysUser, roleIds);
 		return new JsonResult("save ok!");
 	}
+	
+	@RequestMapping("doFindObjectById")
+	@ResponseBody
+	public JsonResult doFindObjectById(Integer id) {
+		return new JsonResult(sysUserService.findObjectById(id));
+	}
 }
