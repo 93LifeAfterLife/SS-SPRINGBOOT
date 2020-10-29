@@ -19,6 +19,8 @@ import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.service.SysUserService;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
+import ch.qos.logback.core.joran.action.NewRuleAction;
+
 @Service
 public class SysUserServiceImpl implements SysUserService {
 	@Autowired
@@ -119,5 +121,26 @@ public class SysUserServiceImpl implements SysUserService {
 		map.put("roleIds", roleIds);
 		//4. 返回数据
 		return map;
+	}
+
+	@Override
+	public int updateObject(SysUser sysUser, Integer... roleIds) {
+		//1. 验证
+		if (sysUser==null) {
+			throw new NullPointerException("NullPointerException: 保存对象不能为空!");
+		}
+		if (StringUtils.isEmpty(sysUser.getUsername())) {
+			throw new IllegalArgumentException("IllegalArgumentException: 用户名不能为空!");
+		}
+		if (roleIds==null|roleIds.length==0) {
+			throw new IllegalArgumentException("IllegalArgumentException: 至少为用户指定一个角色!");
+		}
+		// 还有等等其他验证, 比如用户名已然存在, 密码不合格等等!
+		//2. 执行操作
+		int rows = sysUserDao.updateObject(sysUser);
+		sysUserRoleDao.deleteObjectsByUserId(sysUser.getId());
+		sysUserRoleDao.insertObject(sysUser.getId(), roleIds);
+		//3. 返回
+		return rows;
 	}
 }

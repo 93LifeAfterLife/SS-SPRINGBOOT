@@ -69,11 +69,37 @@
 		(#{username},#{password},#{deptId},#{email},#{mobile},#{salt},#{valid},
 		now(),now(),#{createdUser},#{modifiedUser})
 	</insert>
-	
+
 	<!-- 根据id查询用户以及部门 -->
-	<select id="findObjectById" resultMap="sysUserDeptVo" parameterType="int">
-		select * 
+	<select id="findObjectById" resultMap="sysUserDeptVo"
+		parameterType="int">
+		select *
 		from sys_users
 		where id=#{id}
 	</select>
+
+	<!-- 更新方法 -->
+	<update id="updateObject"
+		parameterType="com.ss.pj.sys.po.SysUser">
+		update sys_users
+		<set>
+			<if test="username!=null and username!=''">
+				username=#{username},
+			</if>
+			<if test="email!=null and email!=''">
+				email=#{email},
+			</if>
+			<if test="mobile!=null and mobile!=''">
+				mobile=#{mobile},
+			</if>
+			<if test="deptId!=null and deptId!=''">
+				deptId=#{deptId},
+			</if>
+			<if test="modifiedUser!=null and modifiedUser!=''">
+				modifiedUser=#{modifiedUser},
+			</if>
+			modifiedTime=now()
+		</set>
+		where id=#{id}
+	</update>
 </mapper>

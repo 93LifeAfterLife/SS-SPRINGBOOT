@@ -16,19 +16,19 @@ import com.ss.pj.sys.vo.SysUserDeptVo;
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
-	
+
 	@RequestMapping("doUserListUI")
 	public String doUserListUI() {
 		return "sys/user_list";
 	}
-	
+
 	@RequestMapping("doFindPageObjects")
 	@ResponseBody
 	public JsonResult doFindPageObjects(String username, Integer pageCurrent) {
 		PageObject<SysUserDeptVo> po = sysUserService.findPageObjects(username, pageCurrent);
 		return new JsonResult(po);
 	}
-	
+
 	@RequestMapping("doValidById")
 	@ResponseBody
 	public JsonResult doValidById(Integer id, Integer valid) {
@@ -36,22 +36,29 @@ public class SysUserController {
 		sysUserService.validById(id, valid, "admin");
 		return new JsonResult("update ok!");
 	}
-	
+
 	@RequestMapping("doUserEditUI")
 	public String doUserEditUI() {
 		return "sys/user_edit";
 	}
-	
+
 	@RequestMapping("doSaveObject")
 	@ResponseBody
 	public JsonResult doSaveObject(SysUser sysUser, Integer... roleIds) {
 		sysUserService.saveObject(sysUser, roleIds);
 		return new JsonResult("save ok!");
 	}
-	
+
 	@RequestMapping("doFindObjectById")
 	@ResponseBody
 	public JsonResult doFindObjectById(Integer id) {
 		return new JsonResult(sysUserService.findObjectById(id));
+	}
+
+	@RequestMapping("doUpdateObject")
+	@ResponseBody
+	public JsonResult doUpdateObject(SysUser entity, Integer... roleIds){
+		sysUserService.updateObject(entity, roleIds);
+		return new JsonResult("update ok");
 	}
 }

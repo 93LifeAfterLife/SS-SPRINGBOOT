@@ -32,4 +32,12 @@ public interface SysUserRoleDao {
 	 * @return
 	 */
 	List<Integer> findRoleIdsByUserId(Integer userId);
+	
+	/**
+	 * 删除关系数据
+	 * @param userId
+	 * @return
+	 */
+	@Delete("delete from sys_user_roles where user_id=#{userId}")
+	int deleteObjectsByUserId(Integer userId);
 }

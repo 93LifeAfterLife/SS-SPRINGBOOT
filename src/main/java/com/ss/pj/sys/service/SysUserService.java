@@ -38,4 +38,12 @@ public interface SysUserService {
 	 * @return
 	 */
 	Map<String, Object> findObjectById(Integer userId);
+	
+	/**
+	 * 更新用户信息到相关联的表中
+	 * @param sysUser
+	 * @param roleIds
+	 * @return
+	 */
+	int updateObject(SysUser sysUser, Integer... roleIds);
 }

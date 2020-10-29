@@ -54,4 +54,11 @@ public interface SysUserDao {
 	 * @return
 	 */
 	SysUserDeptVo findObjectById(Integer id);
+	
+	/**
+	 * 更新用户数据
+	 * @param sysUser
+	 * @return
+	 */
+	int updateObject(SysUser sysUser);
 }
