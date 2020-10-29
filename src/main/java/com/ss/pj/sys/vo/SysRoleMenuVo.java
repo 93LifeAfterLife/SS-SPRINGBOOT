@@ -1,4 +1,4 @@
-package com.ss.pj.common.vo;
+package com.ss.pj.sys.vo;
 
 import java.io.Serializable;
 import java.util.List;

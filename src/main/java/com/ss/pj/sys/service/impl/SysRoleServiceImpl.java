@@ -9,12 +9,12 @@ import org.springframework.util.StringUtils;
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.PageObject;
-import com.ss.pj.common.vo.SysRoleMenuVo;
 import com.ss.pj.sys.dao.SysRoleDao;
 import com.ss.pj.sys.dao.SysRoleMenuDao;
 import com.ss.pj.sys.dao.SysUserRoleDao;
 import com.ss.pj.sys.po.SysRole;
 import com.ss.pj.sys.service.SysRoleService;
+import com.ss.pj.sys.vo.SysRoleMenuVo;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {

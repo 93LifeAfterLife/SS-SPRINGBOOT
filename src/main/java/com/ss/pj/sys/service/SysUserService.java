@@ -3,7 +3,7 @@ package com.ss.pj.sys.service;
 import org.apache.ibatis.annotations.Param;
 
 import com.ss.pj.common.vo.PageObject;
-import com.ss.pj.common.vo.SysUserDeptVo;
+import com.ss.pj.sys.vo.SysUserDeptVo;
 
 public interface SysUserService {
 	/**

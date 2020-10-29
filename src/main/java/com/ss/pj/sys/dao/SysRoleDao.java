@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.ss.pj.common.vo.SysRoleMenuVo;
 import com.ss.pj.sys.po.SysRole;
+import com.ss.pj.sys.vo.SysRoleMenuVo;
 
 @Mapper
 public interface SysRoleDao {

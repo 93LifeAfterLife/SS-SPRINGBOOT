@@ -9,9 +9,9 @@ import org.springframework.util.StringUtils;
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.PageObject;
-import com.ss.pj.common.vo.SysUserDeptVo;
 import com.ss.pj.sys.dao.SysUserDao;
 import com.ss.pj.sys.service.SysUserService;
+import com.ss.pj.sys.vo.SysUserDeptVo;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {

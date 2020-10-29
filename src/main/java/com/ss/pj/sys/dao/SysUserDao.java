@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.ss.pj.common.vo.SysUserDeptVo;
+import com.ss.pj.sys.vo.SysUserDeptVo;
 
 @Mapper
 public interface SysUserDao {

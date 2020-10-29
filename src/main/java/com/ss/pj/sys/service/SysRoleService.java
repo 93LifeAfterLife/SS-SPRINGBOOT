@@ -1,8 +1,8 @@
 package com.ss.pj.sys.service;
 
 import com.ss.pj.common.vo.PageObject;
-import com.ss.pj.common.vo.SysRoleMenuVo;
 import com.ss.pj.sys.po.SysRole;
+import com.ss.pj.sys.vo.SysRoleMenuVo;
 
 public interface SysRoleService {
 	/**

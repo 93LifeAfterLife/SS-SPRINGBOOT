@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ss.pj.common.vo.JsonResult;
 import com.ss.pj.common.vo.PageObject;
-import com.ss.pj.common.vo.SysUserDeptVo;
 import com.ss.pj.sys.service.SysUserService;
+import com.ss.pj.sys.vo.SysUserDeptVo;
 
 @Controller
 @RequestMapping("/user/")
@@ -34,5 +34,10 @@ public class SysUserController {
 		// "admin" 将来是动态获取登陆用户
 		sysUserService.validById(id, valid, "admin");
 		return new JsonResult("update ok!");
+	}
+	
+	@RequestMapping("doUserEditUI")
+	public String doUserEditUI() {
+		return "sys/user_edit";
 	}
 }
