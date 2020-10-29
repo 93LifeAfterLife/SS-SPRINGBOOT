@@ -27,4 +27,12 @@ public class SysUserController {
 		PageObject<SysUserDeptVo> po = sysUserService.findPageObjects(username, pageCurrent);
 		return new JsonResult(po);
 	}
+	
+	@RequestMapping("doValidById")
+	@ResponseBody
+	public JsonResult doValidById(Integer id, Integer valid) {
+		// "admin" 将来是动态获取登陆用户
+		sysUserService.validById(id, valid, "admin");
+		return new JsonResult("update ok!");
+	}
 }

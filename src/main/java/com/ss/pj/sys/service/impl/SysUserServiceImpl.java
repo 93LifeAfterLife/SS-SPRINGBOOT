@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
@@ -34,5 +35,33 @@ public class SysUserServiceImpl implements SysUserService {
 		PageObject<SysUserDeptVo> po = PageUtil.newPageObject(pageCurrent, rowCount, pageSize, records);
 		//5. 返回结果
 		return po;
+	}
+
+	@Override
+	public int validById(Integer id, Integer valid, String modifiedUser) {
+		//1. 验证
+		if (id==null || id<=0) {
+			throw new IllegalArgumentException("IllegalArgumentException: 参数不合法!id="+id);
+		}
+		if (valid!=1 && valid!=0) {
+			throw new IllegalArgumentException("IllegalArgumentException: 参数不合法!valid="+valid);
+		}
+		if (StringUtils.isEmpty(modifiedUser)) {
+			throw new ServiceException("ServiceException: 修改用户不能为空!");
+		}
+		//2. 执行操作
+		int rows = 0;
+		try {
+			rows = sysUserDao.validById(id, valid, modifiedUser);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			// 给维护人员消息
+			throw new ServiceException("ServiceException: 后台正在维护中!");
+		}
+		//3. 判定结果
+		if (rows==0) {
+			throw new ServiceException("ServiceException: 此记录可能已经不存在!");
+		}
+		return rows;
 	}
 }

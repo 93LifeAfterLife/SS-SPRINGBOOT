@@ -27,4 +27,16 @@ public interface SysUserDao {
 	 * @return
 	 */
 	int getRowCount(@Param("username")String username);
+	
+	/**
+	 * 用户禁用启用操作
+	 * @param id
+	 * @param valid
+	 * @param modifiedUser
+	 * @return
+	 */
+	int validById(
+			@Param("id")Integer id, 
+			@Param("valid")Integer valid, 
+			@Param("modifiedUser")String modifiedUser);
 }

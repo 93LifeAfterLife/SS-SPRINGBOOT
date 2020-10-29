@@ -49,6 +49,11 @@
 			select="com.ss.pj.sys.dao.SysDeptDao.findById">
 		</association>
 	</resultMap>
-
-
+	
+	<!-- 禁用启动 -->
+	<update id="validById">
+		update sys_users
+		set valid=#{valid}, modifiedUser=#{modifiedUser}, modifiedTime=now()
+		where id=#{id}
+	</update>
 </mapper>
