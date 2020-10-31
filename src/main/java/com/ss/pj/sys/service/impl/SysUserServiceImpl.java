@@ -19,8 +19,6 @@ import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.service.SysUserService;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
-import ch.qos.logback.core.joran.action.NewRuleAction;
-
 @Service
 public class SysUserServiceImpl implements SysUserService {
 	@Autowired
