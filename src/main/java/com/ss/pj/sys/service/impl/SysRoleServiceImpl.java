@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.ss.pj.common.aspect.annotation.RequiredLog;
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.CheckBox;
@@ -28,6 +29,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
 
+	@RequiredLog("query log")
 	@Override
 	public PageObject<SysRole> findPageObjects(String name, Integer pageCurrent) {
 		//1. 验证参数合法性

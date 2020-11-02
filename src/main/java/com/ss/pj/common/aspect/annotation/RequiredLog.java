@@ -1,4 +1,4 @@
-package com.ss.pj.common.annotation;
+package com.ss.pj.common.aspect.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequiredCache {
-	
+public @interface RequiredLog {
+	String value() default "";
 }

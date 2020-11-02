@@ -34,4 +34,11 @@ public interface SysLogDao {
 			@Param("username")String username,
 			@Param("startIndex")Integer startIndex,
 			@Param("pageSize")Integer pageSize);
+	
+	/**
+	 * 持久化用户行为日志信息
+	 * @param sysLog
+	 * @return
+	 */
+	int insertObject(SysLog sysLog);
 }

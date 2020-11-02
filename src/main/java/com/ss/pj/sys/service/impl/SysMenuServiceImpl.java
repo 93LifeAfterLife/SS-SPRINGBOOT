@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.ss.pj.common.annotation.RequiredCache;
+import com.ss.pj.common.aspect.annotation.RequiredCache;
 import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.dao.SysMenuDao;
 import com.ss.pj.sys.po.SysMenu;

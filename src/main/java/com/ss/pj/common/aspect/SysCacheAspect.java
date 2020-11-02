@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SysCacheAspect {
 	//@Pointcut("execution(* com.ss.pj.sys.service..*.find*(..))")
-	@Pointcut("@annotation(com.ss.pj.common.annotation.RequiredCache)")
+	@Pointcut("@annotation(com.ss.pj.common.aspect.annotation.RequiredCache)")
 	public void doCachePointCut() {}
 	
 	@Around("doCachePointCut()")
