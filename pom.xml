@@ -90,7 +90,7 @@
 			<version>1.7.0</version>
 		</dependency>
 		<!-- aspectj -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 		</dependency>
@@ -98,6 +98,11 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<scope>runtime</scope>
+		</dependency> -->
+		<!-- Spring Boot Starter AOP -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+   		 	<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
 	</dependencies>
