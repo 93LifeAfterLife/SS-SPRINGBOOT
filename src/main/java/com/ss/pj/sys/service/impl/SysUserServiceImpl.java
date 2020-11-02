@@ -8,8 +8,12 @@ import java.util.UUID;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.ss.pj.common.aspect.annotation.RequiredLog;
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.PageObject;
@@ -20,13 +24,21 @@ import com.ss.pj.sys.service.SysUserService;
 import com.ss.pj.sys.vo.SysUserDeptVo;
 
 @Service
+@Transactional(
+		timeout = 30, 
+		readOnly = false, 
+		isolation = Isolation.READ_COMMITTED,
+		rollbackFor = Throwable.class,
+		propagation = Propagation.REQUIRED)
 public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private SysUserDao sysUserDao;
-	
+
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
 
+	@RequiredLog("query user")
+	@Transactional(readOnly = true)
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(String username, Integer pageCurrent) {
 		//1. 参数校验
@@ -74,6 +86,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows;
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public int saveObject(SysUser sysUser, Integer... roleIds) {
 		//1. 验证

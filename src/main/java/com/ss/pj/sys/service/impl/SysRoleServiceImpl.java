@@ -29,7 +29,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
 
-	@RequiredLog("query log")
+	@RequiredLog("query role")
 	@Override
 	public PageObject<SysRole> findPageObjects(String name, Integer pageCurrent) {
 		//1. 验证参数合法性
