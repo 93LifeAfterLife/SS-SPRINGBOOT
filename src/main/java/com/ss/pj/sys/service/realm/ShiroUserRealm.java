@@ -1,0 +1,79 @@
+package com.ss.pj.sys.service.realm;
+
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ss.pj.sys.dao.SysUserDao;
+import com.ss.pj.sys.po.SysUser;
+
+/**
+ * 借助此realm完成认证和授权信息的获取及封装
+ * @author td
+ */
+@Service
+public class ShiroUserRealm extends AuthorizingRealm {
+	@Autowired
+	private SysUserDao sysUserDao;
+	
+	/**
+	 * 授权
+	 */
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		return null;
+	}
+
+	/**
+	 * 此方法负责认证信息的获取及封装
+	 */
+	@Override
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		//1. 从token中获取用户名
+		UsernamePasswordToken upTaken = (UsernamePasswordToken) token;
+		String username = upTaken.getUsername();
+		//2. 基于用户名查询用户信息
+		SysUser sysUser = sysUserDao.findUserByUserName(username);
+		//3. 校验用户信息(用户是否存在, 是否禁用)
+		if (sysUser == null) {
+			throw new UnknownAccountException("UnknownAccountException: 账户不存在!");
+		}
+		if (sysUser.getValid() == 0) {
+			throw new LockedAccountException("LockedAccountException: 账号被禁用!");
+		}
+		//4. 封装数据并返回给认证管理器
+		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
+				sysUser, // principal 身份
+				sysUser.getPassword(),// hashedCredentials 已加密密码 
+				ByteSource.Util.bytes(sysUser.getSalt()),// credentialsSalt 盐值的ByteSource封装
+				getName()// realmName 当前使用的realm名称
+				);
+		return info;
+	}
+	
+	/**
+	 * 设置凭证匹配器
+	 */
+	@Override
+	public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+		//1. 构建凭证匹配对象
+		HashedCredentialsMatcher cMatcher = new HashedCredentialsMatcher();
+		//2. 设置加密算法
+		cMatcher.setHashAlgorithmName("MD5");
+		//3. 设置加密次数
+		cMatcher.setHashIterations(1);
+		super.setCredentialsMatcher(cMatcher);
+	}
+}

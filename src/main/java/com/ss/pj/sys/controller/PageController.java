@@ -13,6 +13,11 @@ public class PageController {
 		return "starter";
 	}
 	
+	@RequestMapping("doLoginUI")
+	public String doLoginUI() {
+		return "login";
+	}
+	
 	@RequestMapping("doPageUI")
 	public String doPageUI() {
 		return "common/page";

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.vo.SysUserDeptVo;
@@ -61,4 +62,12 @@ public interface SysUserDao {
 	 * @return
 	 */
 	int updateObject(SysUser sysUser);
+	
+	/**
+	 * 基于用户名寻找用户信息
+	 * @param username
+	 * @return
+	 */
+	@Select("select * from sys_users where username=#{username}")
+	SysUser findUserByUserName(String username);
 }

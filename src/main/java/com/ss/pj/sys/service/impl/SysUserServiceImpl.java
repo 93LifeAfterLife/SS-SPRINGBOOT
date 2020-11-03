@@ -38,7 +38,7 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysUserRoleDao sysUserRoleDao;
 
 	@RequiredLog("query user")
-	@Transactional(readOnly = true)
+	// @Transactional(readOnly = true)
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(String username, Integer pageCurrent) {
 		//1. 参数校验
@@ -86,7 +86,7 @@ public class SysUserServiceImpl implements SysUserService {
 		return rows;
 	}
 
-	@Transactional(readOnly = true)
+	// @Transactional(readOnly = true)
 	@Override
 	public int saveObject(SysUser sysUser, Integer... roleIds) {
 		//1. 验证
@@ -106,7 +106,7 @@ public class SysUserServiceImpl implements SysUserService {
 		String salt = UUID.randomUUID().toString();
 		sysUser.setSalt(salt);
 		// 加密
-		SimpleHash simpleHash = new SimpleHash("MD5", sysUser.getPassword(), salt);
+		SimpleHash simpleHash = new SimpleHash("MD5", sysUser.getPassword(), salt, 1);
 		sysUser.setPassword(simpleHash.toHex());
 		int rows = sysUserDao.insertObjects(sysUser);
 		sysUserRoleDao.insertObject(sysUser.getId(), roleIds);

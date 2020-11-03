@@ -1,5 +1,8 @@
 package com.ss.pj.sys.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +62,19 @@ public class SysUserController {
 	@ResponseBody
 	public JsonResult doUpdateObject(SysUser entity, Integer... roleIds){
 		sysUserService.updateObject(entity, roleIds);
-		return new JsonResult("update ok");
+		return new JsonResult("update ok!");
+	}
+	
+	@RequestMapping("doLogin")
+	@ResponseBody
+	public JsonResult doLogin(String username, String password) {
+		//1. 封装用户信息
+		UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
+		//2. 提交token对象(传递给SecurityManager)
+		//2.1 构建主体对象
+		Subject subject = SecurityUtils.getSubject();
+		//2.2 执行登陆认证
+		subject.login(upToken);
+		return new JsonResult("login ok!");
 	}
 }

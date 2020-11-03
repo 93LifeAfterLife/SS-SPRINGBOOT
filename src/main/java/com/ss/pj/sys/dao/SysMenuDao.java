@@ -3,6 +3,7 @@ package com.ss.pj.sys.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,6 +11,7 @@ import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.po.SysMenu;
 
 @Mapper
+@CacheNamespace	// 开启缓存
 public interface SysMenuDao {
 	/**
 	 * 查询所有菜单信息

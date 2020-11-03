@@ -1,5 +1,10 @@
 package com.ss.pj.common.exception;
 
+import org.apache.shiro.ShiroException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,5 +34,30 @@ public class GlobalExceptionHandler {
 		e.printStackTrace();
 		log.error(e.getMessage());
 		return new JsonResult(e);
+	}
+	
+	/**
+	 * Shiro框架异常处理
+	 * @param e
+	 * @return
+	 */
+	@ExceptionHandler(ShiroException.class)
+	@ResponseBody
+	public JsonResult doHandleShiroException(ShiroException e) {
+		JsonResult jr = new JsonResult();
+		jr.setState(0);
+		if(e instanceof UnknownAccountException) {
+			jr.setMessage("账户不存在!");
+		}else if(e instanceof LockedAccountException) {
+			jr.setMessage("账户已被禁用!");
+		}else if(e instanceof IncorrectCredentialsException) {
+			jr.setMessage("密码不正确!");
+		}else if(e instanceof AuthorizationException) {
+			jr.setMessage("没有此操作权限!");
+		}else {
+			jr.setMessage("系统维护中!");
+		}
+		e.printStackTrace();
+		return jr;
 	}
 }
