@@ -1,5 +1,7 @@
 package com.ss.pj.sys.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +25,12 @@ public interface SysRoleMenuDao {
 	int insertObjects(
 			@Param("roleId")Integer roleId,
 			@Param("menuIds")Integer... menuIds);
+	
+	/**
+	 * 基于角色id查询菜单ids
+	 * @param roleIds
+	 * @return
+	 */
+	List<Integer> findMenuIdsByRoleIds(
+			@Param("roleIds")Integer... roleIds);
 }

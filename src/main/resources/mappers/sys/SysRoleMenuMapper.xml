@@ -15,7 +15,18 @@
 	
 	<!-- 通过角色id查询所授权的全部菜单id -->
 	<select id="findMenuIdsByRoleId" resultType="int">
-		select menu_id from sys_role_menus
+		select menu_id 
+		from sys_role_menus
 		where role_id = #{id}
+	</select>
+	
+	<!-- 基于角色id查询菜单ids -->
+	<select id="findMenuIdsByRoleIds" resultType="int">
+		select menu_id
+		from sys_role_menus
+		where role_id id
+		<foreach collection="roleIds" separator="," open="(" close=")" item="roleId">
+			#{roleId}	
+		</foreach>
 	</select>
 </mapper>

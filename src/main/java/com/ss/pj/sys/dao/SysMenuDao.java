@@ -3,15 +3,15 @@ package com.ss.pj.sys.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.po.SysMenu;
 
 @Mapper
-@CacheNamespace	// 开启缓存
+// @CacheNamespace(blocking = true)	// 开启缓存, 不推荐使用mybatis的缓存!!!
 public interface SysMenuDao {
 	/**
 	 * 查询所有菜单信息
@@ -43,4 +43,12 @@ public interface SysMenuDao {
 	 * @return
 	 */
 	int updateObject(SysMenu sysMenu);
+	
+	/**
+	 * 基于菜单id查找权限标识信息
+	 * @param menuIds
+	 * @return
+	 */
+	List<String> findPermissionsByMenuIds(
+			@Param("menuIds")Integer... menuIds);
 }

@@ -2,17 +2,19 @@ package com.ss.pj.common.config;
 
 import java.util.LinkedHashMap;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+
+import com.ss.pj.sys.service.realm.ShiroUserRealm;
+
 
 @Configuration
 public class SpringShiroConfig {// 取代spring-shiro.xml
@@ -23,7 +25,7 @@ public class SpringShiroConfig {// 取代spring-shiro.xml
 	 */
 	@Bean("shiroSecurityManager")
 	public SecurityManager newShiroSecurityManager(
-			@Autowired Realm realm) {
+			ShiroUserRealm realm) {
 		DefaultWebSecurityManager sManager = new DefaultWebSecurityManager();
 		// 注入Realm
 		sManager.setRealm(realm);
@@ -58,7 +60,7 @@ public class SpringShiroConfig {// 取代spring-shiro.xml
 		sfBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return sfBean;
 	}
-	
+
 	//===============授权配置================
 	/**
 	 * 授权-1. 配置shiro中bean对象的生命周期管理
@@ -67,9 +69,19 @@ public class SpringShiroConfig {// 取代spring-shiro.xml
 	public LifecycleBeanPostProcessor newLifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
 	}
+
+	/**
+	 * 授权-2.配置代理创建器对象(此对象负责为所有advisor对象创建代理, 底层AOP), 生命周期设置为shiroLifecycle
+	 * @return
+	 */
+	@DependsOn("shiroLifecycle")
+	@Bean
+	public DefaultAdvisorAutoProxyCreator newDefaultAdvisorAutoProxyCreator() {
+		return new DefaultAdvisorAutoProxyCreator();
+	}
 	
 	/**
-	 * 授权-2. 配置advisor对象, 此对象中的方法将检测要执行的业务方法上
+	 * 授权-3. 配置advisor对象, 此对象中的方法将检测要执行的业务方法上
 	 * 是否有@RequiresPermissions注解, 有注解则会调用ProxyCreator
 	 * 为方法所在类创建代理对象, 然后实现权限控制(AOP)
 	 * @param securityManager

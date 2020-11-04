@@ -50,4 +50,6 @@ public class SysMenuController {
 		sysMenuService.updateObject(sysMenu);
 		return new JsonResult("update ok!");
 	}
+	
+	
 }

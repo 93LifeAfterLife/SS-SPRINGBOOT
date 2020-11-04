@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.ss.pj.common.aspect.annotation.RequiredCache;
 import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.dao.SysMenuDao;
 import com.ss.pj.sys.po.SysMenu;
@@ -18,7 +17,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysMenuDao sysMenuDao;
 
-	@RequiredCache
+	// @RequiredCache
 	@Override
 	public List<Map<String, Object>> findObjects() {
 		List<Map<String, Object>> list = sysMenuDao.findObjects();

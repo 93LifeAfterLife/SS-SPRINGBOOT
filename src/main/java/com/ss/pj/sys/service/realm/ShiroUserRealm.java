@@ -1,5 +1,9 @@
 package com.ss.pj.sys.service.realm;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -9,14 +13,20 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.ss.pj.sys.dao.SysMenuDao;
+import com.ss.pj.sys.dao.SysRoleMenuDao;
 import com.ss.pj.sys.dao.SysUserDao;
+import com.ss.pj.sys.dao.SysUserRoleDao;
 import com.ss.pj.sys.po.SysUser;
 
 /**
@@ -28,12 +38,51 @@ public class ShiroUserRealm extends AuthorizingRealm {
 	@Autowired
 	private SysUserDao sysUserDao;
 	
+	@Autowired
+	private SysUserRoleDao sysUserRoleDao;
+	
+	@Autowired
+	private SysRoleMenuDao sysRoleMenuDao;
+	
+	@Autowired
+	private SysMenuDao sysMenuDao;
+	
 	/**
-	 * 授权
+	 * 通过此方法完成授权信息的获取及封装
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		return null;
+		//1. 获取登陆用户的信息
+		SysUser sysUser = (SysUser) principals.getPrimaryPrincipal();
+		Integer userId = sysUser.getId();
+		//2. 基于用户id获取用户拥有的角色
+		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(userId);
+		//2.1 校验, 没有权限则抛出异常
+		if (roleIds==null || roleIds.size()==0) {
+			throw new AuthorizationException();
+		}
+		//3. 基于角色id获取菜单id
+		Integer[] array = {};
+		//3.1 list转array
+		List<Integer> menuIds = sysRoleMenuDao.findMenuIdsByRoleIds(roleIds.toArray(array));
+		//3.2 校验
+		if (menuIds==null || menuIds.size()==0) {
+			throw new AuthorizationException();
+		}
+		//4. 基于菜单id获取权限标识
+		List<String> permissionList = sysMenuDao.findPermissionsByMenuIds(menuIds.toArray(array));
+		//5. 对权限标识信息进行封装并返回, 接受set去重
+		Set<String> set = new HashSet<>();
+		for (String permission : permissionList) {
+			//5.1 去除null值
+			if (!StringUtils.isEmpty(permission)) {
+				set.add(permission);
+			}
+		}
+		System.out.println(permissionList);
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		info.setStringPermissions(set);
+		return info;
 	}
 
 	/**
