@@ -2,8 +2,11 @@ package com.ss.pj.common.config;
 
 import java.util.LinkedHashMap;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringShiroConfig {// 取代spring-shiro.xml
+	//===============认证授权配置================
 	/**
-	 * 配置SecurityManager
+	 * 认证-1. 配置SecurityManager
 	 * @return
 	 */
 	@Bean("shiroSecurityManager")
@@ -27,7 +31,7 @@ public class SpringShiroConfig {// 取代spring-shiro.xml
 	}
 
 	/**
-	 * 配置ShiroFilterFactoryBean, 并创建多个filter对象
+	 * 认证-2. 配置ShiroFilterFactoryBean, 并创建多个filter对象
 	 * @param securityManager
 	 * @return
 	 */
@@ -53,5 +57,28 @@ public class SpringShiroConfig {// 取代spring-shiro.xml
 		filterChainDefinitionMap.put("/**","authc");
 		sfBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return sfBean;
+	}
+	
+	//===============授权配置================
+	/**
+	 * 授权-1. 配置shiro中bean对象的生命周期管理
+	 */
+	@Bean("shiroLifecycle")
+	public LifecycleBeanPostProcessor newLifecycleBeanPostProcessor() {
+		return new LifecycleBeanPostProcessor();
+	}
+	
+	/**
+	 * 授权-2. 配置advisor对象, 此对象中的方法将检测要执行的业务方法上
+	 * 是否有@RequiresPermissions注解, 有注解则会调用ProxyCreator
+	 * 为方法所在类创建代理对象, 然后实现权限控制(AOP)
+	 * @param securityManager
+	 * @return
+	 */
+	public AuthorizationAttributeSourceAdvisor newAuthorizationAttributeSourceAdvisor(
+			@Qualifier("shiroSecurityManager") SecurityManager securityManager) {
+		AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+		advisor.setSecurityManager(securityManager);
+		return advisor;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,10 @@ public class SysUserServiceImpl implements SysUserService {
 		return po;
 	}
 
+	/**
+	 * 当方法上有@RequiresPermissions注解时, shiro框架底层会对此方法进行权限控制(授权以后才可以访问)
+	 */
+	@RequiresPermissions("sys:user:valid")
 	@Override
 	public int validById(Integer id, Integer valid, String modifiedUser) {
 		//1. 验证
