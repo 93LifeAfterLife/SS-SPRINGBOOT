@@ -2,6 +2,7 @@ package com.ss.pj.sys.service.impl;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,8 +30,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
 
-	@RequiredLog("query role")
 	@Override
+	@RequiresPermissions("sys:role:view")
 	public PageObject<SysRole> findPageObjects(String name, Integer pageCurrent) {
 		//1. 验证参数合法性
 		//1.1 验证pageCurrent合法性
@@ -52,6 +53,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:role:delete")
+	@RequiredLog("delete role")
 	public int deleteObject(Integer id) {
 		//1. 验证参数合法性
 		if (id==null || id<1) {
@@ -69,6 +72,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:role:add")
+	@RequiredLog("add role")
 	public int insertObject(SysRole sysRole, Integer...menuIds) {
 		//1. 合法性验证
 		if (sysRole == null) {
@@ -87,6 +92,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:role:add")
 	public SysRoleMenuVo findObjectById(Integer id) {
 		//1. 验证
 		if (id ==null || id <=0) {
@@ -102,6 +108,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:role:update")
+	@RequiredLog("update role")
 	public int updateObject(SysRole sysRole, Integer... menuIds) {
 		//1. 验证
 		if (sysRole == null) {
@@ -128,6 +136,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:role:view")
 	public List<CheckBox> findObjects() {
 		return sysRoleDao.findObjects();
 	}

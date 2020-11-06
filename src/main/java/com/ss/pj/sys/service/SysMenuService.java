@@ -32,4 +32,11 @@ public interface SysMenuService {
 	 * @return
 	 */
 	int updateObject(SysMenu sysMenu);
+	
+	/**
+	 * 基于菜单id删除菜单
+	 * @param menuId
+	 * @return
+	 */
+	int deleteObject(Integer id);
 }

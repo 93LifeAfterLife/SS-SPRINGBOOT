@@ -8,10 +8,8 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import com.ss.pj.sys.service.realm.ShiroUserRealm;
 
@@ -69,16 +67,6 @@ public class SpringShiroConfig {// 取代spring-shiro.xml
 	@Bean("shiroLifecycle")
 	public LifecycleBeanPostProcessor newLifecycleBeanPostProcessor() {
 		return new LifecycleBeanPostProcessor();
-	}
-
-	/**
-	 * 授权-2.配置代理创建器对象(此对象负责为所有advisor对象创建代理, 底层AOP), 生命周期设置为shiroLifecycle
-	 * @return
-	 */
-	@Bean
-	@DependsOn("shiroLifecycle")
-	public DefaultAdvisorAutoProxyCreator newDefaultAdvisorAutoProxyCreator() {
-		return new DefaultAdvisorAutoProxyCreator();
 	}
 
 	/**

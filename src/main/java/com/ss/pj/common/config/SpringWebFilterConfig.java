@@ -1,8 +1,10 @@
 package com.ss.pj.common.config;
 
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 @Configuration
@@ -25,5 +27,15 @@ public class SpringWebFilterConfig {// 取代web.xml中的filter配置
 		fBean.setOrder(Integer.MAX_VALUE-1);
 		fBean.addUrlPatterns("/*");
 		return fBean;
+	}
+
+	/**
+	 * 授权-2.配置代理创建器对象(此对象负责为所有advisor对象创建代理, 底层AOP), 生命周期设置为shiroLifecycle
+	 * @return
+	 */
+	@Bean
+	@DependsOn("shiroLifecycle")
+	public DefaultAdvisorAutoProxyCreator newDefaultAdvisorAutoProxyCreator() {
+		return new DefaultAdvisorAutoProxyCreator();
 	}
 }

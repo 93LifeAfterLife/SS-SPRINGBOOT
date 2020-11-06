@@ -29,14 +29,14 @@ public class SysDeptController {
 	@ResponseBody
 	public JsonResult doUpdateObject(SysDept entity){
 		sysDeptService.updateObject(entity);
-	    return new JsonResult("update ok");
+	    return new JsonResult("update ok!");
 	}
 	
 	@RequestMapping("doSaveObject")
 	@ResponseBody
 	public JsonResult doSaveObject(SysDept entity){
 		sysDeptService.saveObject(entity);
-		return new JsonResult("save ok");
+		return new JsonResult("save ok!");
 	}
 	
 	@RequestMapping("doFindZTreeNodes")
@@ -50,7 +50,7 @@ public class SysDeptController {
 	@ResponseBody
 	public JsonResult doDeleteObject(Integer id){
 		sysDeptService.deleteObject(id);
-		return new JsonResult("delete ok");
+		return new JsonResult("delete ok!");
 	}
 	
 	@RequestMapping("doFindObjects")

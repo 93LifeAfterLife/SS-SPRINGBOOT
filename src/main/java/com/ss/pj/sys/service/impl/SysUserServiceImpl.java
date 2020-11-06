@@ -39,8 +39,8 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysUserRoleDao sysUserRoleDao;
 
 	// @Transactional(readOnly = true)
-	@RequiredLog("query user")
 	@Override
+	@RequiresPermissions("sys:user:view")
 	public PageObject<SysUserDeptVo> findPageObjects(String username, Integer pageCurrent) {
 		//1. 参数校验
 		if (pageCurrent==null || pageCurrent<1)
@@ -62,6 +62,7 @@ public class SysUserServiceImpl implements SysUserService {
 	/**
 	 * 当方法上有@RequiresPermissions注解时, shiro框架底层会对此方法进行权限控制(授权以后才可以访问)
 	 */
+	@RequiredLog("valid user")
 	@RequiresPermissions("sys:user:valid")
 	@Override
 	public int validById(Integer id, Integer valid, String modifiedUser) {
@@ -93,6 +94,8 @@ public class SysUserServiceImpl implements SysUserService {
 
 	// @Transactional(readOnly = true)
 	@Override
+	@RequiresPermissions("sys:user:add")
+	@RequiredLog("add user")
 	public int saveObject(SysUser sysUser, Integer... roleIds) {
 		//1. 验证
 		if (sysUser == null) {
@@ -120,6 +123,7 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:user:view")
 	public Map<String, Object> findObjectById(Integer userId) {
 		//1. 验证
 		if (userId == null || userId<=0) {
@@ -140,6 +144,8 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
+	@RequiresPermissions("sys:user:update")
+	@RequiredLog("update user")
 	public int updateObject(SysUser sysUser, Integer... roleIds) {
 		//1. 验证
 		if (sysUser==null) {

@@ -2,9 +2,11 @@ package com.ss.pj.sys.service.impl;
 
 import java.util.List;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ss.pj.common.aspect.annotation.RequiredLog;
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.util.PageUtil;
 import com.ss.pj.common.vo.PageObject;
@@ -24,6 +26,8 @@ public class SysLogServiceImpl implements SysLogService{
 	//private static final Logger Logger = LoggerFactory.getLogger(SysLogServiceImpl.class);
 
 	@Override
+	@RequiresPermissions("sys:log:delete")
+	@RequiredLog("delete logs")
 	public int deleteObjectById(Integer id) {
 		//1. 参数校验
 		//2. 执行删除
@@ -38,6 +42,8 @@ public class SysLogServiceImpl implements SysLogService{
 	}
 
 	@Override
+	@RequiresPermissions("sys:log:delete")
+	@RequiredLog("delete logs")
 	public int deleteObjectsByIds(Integer... ids) {
 		//1. 参数校验
 		if (ids == null||ids.length == 0) {
@@ -61,6 +67,7 @@ public class SysLogServiceImpl implements SysLogService{
 	}
 
 	@Override
+	@RequiresPermissions("sys:log:view")
 	public PageObject<SysLog> findPageObjects(String username, Integer pageCurrent) {
 		//1. 参数校验
 		if (pageCurrent==null || pageCurrent<1)

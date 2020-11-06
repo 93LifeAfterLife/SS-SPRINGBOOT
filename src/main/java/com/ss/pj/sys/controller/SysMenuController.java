@@ -51,5 +51,10 @@ public class SysMenuController {
 		return new JsonResult("update ok!");
 	}
 	
-	
+	@RequestMapping("doDeleteObject")
+	@ResponseBody
+	public JsonResult doDeleteObject(Integer id) {
+		sysMenuService.deleteObject(id);
+		return new JsonResult("delete ok!");
+	}
 }

@@ -3,6 +3,7 @@ package com.ss.pj.sys.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -51,4 +52,20 @@ public interface SysMenuDao {
 	 */
 	List<String> findPermissionsByMenuIds(
 			@Param("menuIds")Integer... menuIds);
+	
+	/**
+	 * 基于菜单id删除菜单
+	 * @param menuId
+	 * @return
+	 */
+	@Delete("delete from sys_menus where id = #{id}")
+	int deleteObject(Integer id);
+	
+	/**
+	 * 获取节点下的子元素(节点)个数
+	 * @param id
+	 * @return
+	 */
+	@Select("select count(*) from sys_menus where parentId=#{id}")
+	int getChildCount(Integer id);
 }

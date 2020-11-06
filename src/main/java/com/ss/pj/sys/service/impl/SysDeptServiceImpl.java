@@ -2,11 +2,13 @@ package com.ss.pj.sys.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.ss.pj.common.aspect.annotation.RequiredLog;
 import com.ss.pj.common.exception.ServiceException;
 import com.ss.pj.common.vo.ZTreeNode;
 import com.ss.pj.sys.dao.SysDeptDao;
@@ -29,6 +31,8 @@ public class SysDeptServiceImpl implements SysDeptService {
 	
 	@Transactional(rollbackFor=Throwable.class)
 	@Override
+	@RequiresPermissions("sys:dept:update")
+	@RequiredLog("update dept")
 	public int updateObject(SysDept entity) {
 		//1.合法验证
 		if(entity==null)
@@ -48,6 +52,8 @@ public class SysDeptServiceImpl implements SysDeptService {
 	}
 	
 	@Override
+	@RequiresPermissions("sys:dept:add")
+	@RequiredLog("add dept")
 	public int saveObject(SysDept entity) {
 		//1.合法验证
 		if(entity==null)
@@ -63,16 +69,20 @@ public class SysDeptServiceImpl implements SysDeptService {
 	}
 	@Transactional(readOnly=true)//默认为false
 	@Override
+	@RequiresPermissions("sys:dept:view")
 	public List<ZTreeNode> findZTreeNodes() {
 		return sysDeptDao.findZTreeNodes();
 	}
 	@Transactional(readOnly=true)
 	@Override
+	@RequiresPermissions("sys:dept:view")
 	public List<Map<String, Object>> findObjects() {
 		return sysDeptDao.findObjects();
 	}
 	
 	@Override
+	@RequiresPermissions("sys:dept:delete")
+	@RequiredLog("delete dept")
 	public int deleteObject(Integer id) {
 		//1.合法性验证
 		if(id==null||id<=0)
