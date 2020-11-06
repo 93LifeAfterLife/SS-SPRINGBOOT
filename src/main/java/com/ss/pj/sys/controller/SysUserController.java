@@ -36,7 +36,10 @@ public class SysUserController {
 	@ResponseBody
 	public JsonResult doValidById(Integer id, Integer valid) {
 		// "admin" 将来是动态获取登陆用户
-		sysUserService.validById(id, valid, "admin");
+		//1. 获取登陆用户
+		SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+		//2. 获取用户名并记录
+		sysUserService.validById(id, valid, sysUser.getUsername());
 		return new JsonResult("update ok!");
 	}
 
@@ -67,13 +70,16 @@ public class SysUserController {
 	
 	@RequestMapping("doLogin")
 	@ResponseBody
-	public JsonResult doLogin(String username, String password) {
+	public JsonResult doLogin(String username, String password, Boolean isRememberMe) {
 		//1. 封装用户信息
 		UsernamePasswordToken upToken = new UsernamePasswordToken(username, password);
 		//2. 提交token对象(传递给SecurityManager)
 		//2.1 构建主体对象
 		Subject subject = SecurityUtils.getSubject();
-		//2.2 执行登陆认证
+		//2.2 执行登陆认证, 判断"记住我"
+		if (isRememberMe) {
+			upToken.setRememberMe(true);
+		}
 		subject.login(upToken);
 		return new JsonResult("login ok!");
 	}

@@ -3,6 +3,7 @@ package com.ss.pj.common.aspect;
 import java.lang.reflect.Method;
 import java.util.Date;
 
+import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,6 +18,7 @@ import com.ss.pj.common.aspect.annotation.RequiredLog;
 import com.ss.pj.common.util.IpUtil;
 import com.ss.pj.sys.dao.SysLogDao;
 import com.ss.pj.sys.po.SysLog;
+import com.ss.pj.sys.po.SysUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -86,7 +88,9 @@ public class SysLogAspect {
 		//2. 封装用户行为信息
 		SysLog sysLog = new SysLog();
 		sysLog.setIp(IpUtil.getIpAddr());
-		sysLog.setUsername("admin");
+		//2.1 获取用户信息
+		SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+		sysLog.setUsername(sysUser.getUsername());
 		sysLog.setMethod(methodName);// 目标类全名+方法
 		sysLog.setParams(getRequestParams(jp));// 方法实际参数值
 		sysLog.setOperation(getRequestOperation(targetCls, ms));// 基于注解方式获取操作名
