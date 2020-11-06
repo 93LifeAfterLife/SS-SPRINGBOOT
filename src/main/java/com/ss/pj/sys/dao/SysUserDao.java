@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.ss.pj.sys.po.SysUser;
 import com.ss.pj.sys.vo.SysUserDeptVo;
@@ -70,4 +71,17 @@ public interface SysUserDao {
 	 */
 	@Select("select * from sys_users where username=#{username}")
 	SysUser findUserByUserName(String username);
+	
+	/**
+	 * 基于用户id, 新密码, 盐值修改用户密码
+	 * @param id
+	 * @param password
+	 * @param salt
+	 * @return
+	 */
+	@Update("update sys_users set password=#{password},salt=#{salt},modifiedTime=now() where id=#{id}")
+	int updatePassword(
+			@Param("id")Integer id, 
+			@Param("password")String password, 
+			@Param("salt")String salt);
 }

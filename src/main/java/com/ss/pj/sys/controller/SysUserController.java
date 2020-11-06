@@ -67,7 +67,7 @@ public class SysUserController {
 		sysUserService.updateObject(entity, roleIds);
 		return new JsonResult("update ok!");
 	}
-	
+
 	@RequestMapping("doLogin")
 	@ResponseBody
 	public JsonResult doLogin(String username, String password, Boolean isRememberMe) {
@@ -82,5 +82,17 @@ public class SysUserController {
 		}
 		subject.login(upToken);
 		return new JsonResult("login ok!");
+	}
+
+	@RequestMapping("doPwdEditUI")
+	public String doPwdEditUI() {
+		return "sys/pwd_edit";
+	}
+	
+	@RequestMapping("doUpdatePassword")
+	@ResponseBody
+	public JsonResult doUpdatePassword(String password, String newPassword, String cfmPassword) {
+		sysUserService.updatePassword(password, newPassword, cfmPassword);
+		return new JsonResult("update ok!");
 	}
 }

@@ -16,6 +16,8 @@ $(function () {
     doLoadUI("load-role-id", "role/doRoleListUI");
     // 加载用户页面
     doLoadUI("load-user-id", "user/doUserListUI");
+    // 加载密码页面
+    doLoadUI("load-pwd-id", "user/doPwdEditUI");
 });
 
 // 提取共性操作, 加载页面

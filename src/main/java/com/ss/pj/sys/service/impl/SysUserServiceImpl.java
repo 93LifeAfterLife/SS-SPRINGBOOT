@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,6 +164,44 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserRoleDao.deleteObjectsByUserId(sysUser.getId());
 		sysUserRoleDao.insertObject(sysUser.getId(), roleIds);
 		//3. 返回
+		return rows;
+	}
+
+	@Override
+	@RequiredLog("update pwd")
+	public int updatePassword(String password, String newPassword, String cfmPassword) {
+		//System.out.println(password+"-"+newPassword+"-"+cfmPassword);
+		//1. 验证
+		if (StringUtils.isEmpty(password)) {
+			throw new IllegalArgumentException("IllegalArgumentException: 还未填入原密码!");
+		}
+		if (StringUtils.isEmpty(newPassword)) {
+			throw new IllegalArgumentException("IllegalArgumentException: 新密码不能为空!");
+		}
+		if (StringUtils.isEmpty(cfmPassword)) {
+			throw new IllegalArgumentException("IllegalArgumentException: 请确认密码!");
+		}
+		if (!newPassword.equals(cfmPassword)) {
+			throw new IllegalArgumentException("IllegalArgumentException: 两次输入的密码不相同!");
+		}
+		//2. 获取登陆用户
+		SysUser sysUser = (SysUser) SecurityUtils.getSubject().getPrincipal();
+		//2.1 先将输入的原密码进行同样的加密, 使用相同的盐值(从数据库取)
+		String checkPassword = new SimpleHash("MD5", password, sysUser.getSalt(), 1).toHex();
+		//2.2 再判断输入的原密码是否与数据库一致
+		if (!checkPassword.equals(sysUser.getPassword())) {
+			throw new IllegalArgumentException("IllegalArgumentException: 原密码不正确!");
+		}
+		//3. 对新密码进行加密
+		//3.1 获取新的随机盐值
+		String salt = UUID.randomUUID().toString();
+		//3.2 基于新盐值加密新密码
+		String cpgPassword = new SimpleHash("MD5", newPassword, salt, 1).toHex();// CryPtoGraphic 加密的
+		//4. 将新密码加密以后的结果更新到数据库
+		int rows = sysUserDao.updatePassword(sysUser.getId(), cpgPassword, salt);
+		if (rows==0) {
+			throw new ServiceException("ServiceException: 修改密码失败!请稍后重试...");
+		}
 		return rows;
 	}
 }

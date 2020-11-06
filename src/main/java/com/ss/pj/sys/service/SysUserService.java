@@ -46,4 +46,13 @@ public interface SysUserService {
 	 * @return
 	 */
 	int updateObject(SysUser sysUser, Integer... roleIds);
+	
+	/**
+	 * 更新用户密码
+	 * @param password 原密码
+	 * @param newPassword 新密码(未加密)
+	 * @param cfgPassword 确认密码
+	 * @return
+	 */
+	int updatePassword(String password,String newPassword, String cfmPassword);
 }
