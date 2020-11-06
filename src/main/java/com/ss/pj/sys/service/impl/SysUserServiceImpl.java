@@ -38,8 +38,8 @@ public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private SysUserRoleDao sysUserRoleDao;
 
-	@RequiredLog("query user")
 	// @Transactional(readOnly = true)
+	@RequiredLog("query user")
 	@Override
 	public PageObject<SysUserDeptVo> findPageObjects(String username, Integer pageCurrent) {
 		//1. 参数校验

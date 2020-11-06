@@ -52,6 +52,7 @@ public class ShiroUserRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		System.out.println("doGetAuthorizationInfo: 查询权限中...");
 		//1. 获取登陆用户的信息
 		SysUser sysUser = (SysUser) principals.getPrimaryPrincipal();
 		Integer userId = sysUser.getId();

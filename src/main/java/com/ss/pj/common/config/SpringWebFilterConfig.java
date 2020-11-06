@@ -22,6 +22,7 @@ public class SpringWebFilterConfig {// 取代web.xml中的filter配置
 		fBean.setFilter(filter);
 		//3. 配置
 		fBean.setEnabled(true);// true表示将生命周期交给spring管理(由ServletContext对象负责), 默认就是true
+		fBean.setOrder(Integer.MAX_VALUE-1);
 		fBean.addUrlPatterns("/*");
 		return fBean;
 	}
